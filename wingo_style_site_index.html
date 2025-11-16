@@ -1,0 +1,175 @@
+<!--
+Wingo-style site (single-file) - index.html
+
+What this file contains:
+- A responsive single-page HTML/CSS/JS template in Bengali
+- A sample "post" layout that looks like the example you shared
+- Buttons for Telegram / Contact (placeholders)
+- Small JavaScript to simulate the dashboard info
+
+How to use / deploy:
+1) Local: save this file as `index.html` and open in browser.
+2) GitHub Pages: create a repo, upload this file as index.html to root, enable Pages from main branch.
+3) Netlify: drag & drop the file into Netlify Drop (or connect repo) to deploy.
+4) Blogger: If you want a Blogger blog, you can paste the inner HTML content into a Blogger post (HTML view) or ask me to convert to a Blogger theme (I can do that next).
+
+Important legal note:
+- This template only provides layout and UI. Do NOT use it to promote or teach hacking, illegal access, or any activity that breaks laws or platform rules. I will not help create or host content that instructs people to hack, defraud, or break terms-of-service.
+
+If you want a zip file, custom domain setup, or me to upload it somewhere, tell me how you want it deployed and provide access details (be careful sharing credentials). Otherwise tell me what text, images, and links to replace and I'll update the file.
+-->
+
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wingo 30 sec — Arafat Vai (Sample)</title>
+  <meta name="description" content="Wingo-style tutorial template. Use responsibly." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  <style>
+    :root{--bg:#f7f7f8;--card:#ffffff;--muted:#6b7280;--accent:#0b74de}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali',sans-serif;background:var(--bg);color:#111}
+    .wrap{max-width:900px;margin:18px auto;padding:0 16px}
+
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{font-weight:700;font-size:18px}
+    nav .link{font-size:14px;color:var(--muted);margin-left:12px;text-decoration:none}
+
+    .post{background:var(--card);border-radius:10px;padding:18px;border:1px solid #e6e6e9}
+    .post .title{font-size:22px;font-weight:800;margin:0 0 6px}
+    .meta{color:var(--muted);font-size:13px;margin-bottom:12px}
+
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0}
+    @media (max-width:620px){.grid{grid-template-columns:1fr}}
+
+    .panel{background:#fbfdff;border:1px solid #eef5ff;padding:12px;border-radius:8px}
+    .panel h4{margin:0 0 8px;font-size:14px}
+    .panel .value{font-weight:700;font-size:18px}
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .btn{padding:8px 12px;border-radius:8px;background:transparent;border:1px solid #d1d5db;text-decoration:none;font-size:14px;cursor:pointer}
+    .btn.primary{background:var(--accent);color:white;border-color:transparent}
+
+    .content{margin-top:12px;line-height:1.6;color:#111}
+
+    footer{margin:18px 0;text-align:center;color:var(--muted);font-size:13px}
+
+    .notice{background:#fff7ed;border:1px solid #ffedd5;padding:10px;border-radius:8px;color:#92400e;margin-top:12px}
+
+    /* small utility */
+    .center{display:flex;align-items:center;justify-content:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Arafat Vai — Wingo 30 sec (Sample)</div>
+      <nav>
+        <a class="link" href="#">যোগাযোগ</a>
+        <a class="link" href="#" id="telegramLink">টেলিগ্রাম</a>
+      </nav>
+    </header>
+
+    <main>
+      <article class="post">
+        <h1 class="title">Wingo 30 sec hack</h1>
+        <div class="meta">Posted: November 16, 2025 • Example</div>
+
+        <div class="grid" role="region" aria-label="dashboard">
+          <div class="panel">
+            <h4>Result Type</h4>
+            <div class="value" id="resultType">—</div>
+          </div>
+
+          <div class="panel">
+            <h4>Time Left</h4>
+            <div class="value" id="timeLeft">00:30</div>
+          </div>
+
+          <div class="panel">
+            <h4>Win Rate</h4>
+            <div class="value" id="winRate">0%</div>
+          </div>
+
+          <div class="panel">
+            <h4>Server</h4>
+            <div class="value" id="serverStatus">Connected</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" onclick="simulate()">Simulate</button>
+          <button class="btn" onclick="resetAll()">Reset</button>
+          <a class="btn primary" href="#" onclick="joinTelegram()">Join Telegram</a>
+        </div>
+
+        <div class="notice" id="disclaimerBox">
+          <strong>Disclaimer:</strong> এই টেমপ্লেটটি কেবল লেআউট এবং UI প্রদর্শনের জন্য। কোনো অবৈধ হ্যাকিং বা জুয়াকে উৎসাহিত/অপব্যবহার করবেন না।
+        </div>
+
+        <div class="content" id="mainContent">
+          <p>এখানে তুমি তোমার টিউটোরিয়াল, টিপস বা পোস্ট লিখতে পারো। চাইলে আমি কাস্টম কন্টেন্ট বসিয়ে দেবো — যেমন: টেলিগ্রাম লিংক, ছবি, অথবা অতিরিক্ত পোস্ট সেকশন।</p>
+
+          <h3>ব্লগ টিপস</h3>
+          <ul>
+            <li>প্রতি পোস্টে পরিষ্কার ডিসক্লেইমার রাখো।</li>
+            <li>মূল কনটেন্টে অনৈতিক বা অবৈধ নির্দেশনা দেবেন না।</li>
+            <li>SEO জন্য সার্চ-ফ্রেন্ডলি শিরোনাম ও মেটা ব্যবহার করো।</li>
+          </ul>
+        </div>
+
+      </article>
+
+      <footer>
+        © 2025 — তোমার সাইটের নাম • যদি কাস্টমাইজেশন চাও বলো
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Simple simulation script to make the page interactive
+    const resultEl = document.getElementById('resultType')
+    const timeEl = document.getElementById('timeLeft')
+    const winEl = document.getElementById('winRate')
+    const serverEl = document.getElementById('serverStatus')
+
+    let timer = null
+
+    function randomChoice(){
+      const arr = ['BIG RED', 'SMALL GREEN', 'BIG GREEN', 'SMALL RED']
+      return arr[Math.floor(Math.random()*arr.length)]
+    }
+
+    function simulate(){
+      // simulate changing values
+      if(timer) return
+      timer = setInterval(()=>{
+        resultEl.textContent = randomChoice()
+        const seconds = Math.floor(Math.random()*60)
+        timeEl.textContent = (seconds<10? '00:' + ('0'+seconds) : '00:'+seconds)
+        winEl.textContent = Math.floor(Math.random()*100)+'%'
+      }, 1200)
+    }
+    function resetAll(){
+      clearInterval(timer); timer = null
+      resultEl.textContent = '—'
+      timeEl.textContent = '00:30'
+      winEl.textContent = '0%'
+    }
+
+    function joinTelegram(){
+      // Replace with your real telegram link
+      window.open('https://t.me/your_channel_here','_blank')
+    }
+
+    document.getElementById('telegramLink').addEventListener('click', function(e){
+      e.preventDefault(); joinTelegram()
+    })
+
+    // initial state
+    resetAll()
+  </script>
+</body>
+</html>
