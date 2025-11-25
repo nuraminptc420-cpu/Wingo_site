@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wingo Ai — Clone</title>
+  <style>
+    :root{--accent:#0f766e;--muted:#6b7280;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans',sans-serif}
+    body{margin:0;background:#f8fafc;color:#0f172a}
+    header{background:#fff;border-bottom:1px solid #e6eef5;padding:20px 16px;display:flex;align-items:center;gap:12px}
+    .logo{font-weight:700;color:var(--accent);font-size:20px}
+    .container{max-width:900px;margin:28px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+    .card{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,0.04)}
+    .card h3{margin:0;font-size:13px;color:var(--muted)}
+    .card p{margin:8px 0 0;font-size:22px;font-weight:700}
+    .wide{grid-column:1/-1}
+    section h2{margin:0 0 10px 0}
+    .history-list{list-style:none;padding:0;margin:0}
+    .history-list li{background:#fff;margin-bottom:8px;padding:12px;border-radius:8px;border:1px solid #eef2f7}
+    footer{max-width:900px;margin:20px auto;color:var(--muted);padding:0 16px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    input[type=number]{padding:8px;border-radius:8px;border:1px solid #dbe7ee;width:120px}
+    @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.card p{font-size:18px}}
+    @media(max-width:420px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Arafat Vai</div>
+    <div style="margin-left:auto;color:var(--muted);font-size:14px">Wingo Ai • November 07, 2025</div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <div class="card">
+        <h3>Total Wins</h3>
+        <p id="wins">0</p>
+      </div>
+      <div class="card">
+        <h3>Total Losses</h3>
+        <p id="losses">0</p>
+      </div>
+      <div class="card">
+        <h3>Accuracy</h3>
+        <p id="accuracy">0%</p>
+      </div>
+      <div class="card wide">
+        <h3>Current Period</h3>
+        <p id="period">-</p>
+      </div>
+      <div class="card wide">
+        <h3>Prediction</h3>
+        <p id="prediction">-</p>
+      </div>
+    </div>
+
+    <section>
+      <h2>History</h2>
+      <div class="controls">
+        <input id="historyInput" placeholder="Add history (e.g. Win: Team A)" />
+        <button id="addBtn">Add</button>
+        <button id="clearBtn" style="background:#ef4444">Clear All</button>
+      </div>
+      <ul id="history" class="history-list"></ul>
+    </section>
+
+    <section style="margin-top:18px">
+      <h2>Comments</h2>
+      <p style="color:var(--muted)">Post a comment (this demo stores locally in your browser)</p>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <input id="name" placeholder="নাম" />
+        <input id="comment" placeholder="কমেন্ট লিখুন" style="flex:1" />
+        <button id="post">Post</button>
+      </div>
+      <ul id="comments" style="list-style:none;padding:0;margin-top:12px"></ul>
+    </section>
+  </main>
+
+  <footer>
+    Powered by Blogger • Simple clone demo
+  </footer>
+
+  <script>
+    // Simple local storage backed data model
+    const $ = id => document.getElementById(id);
+    const state = JSON.parse(localStorage.getItem('wingo_state') || '{}');
+    function save(){localStorage.setItem('wingo_state', JSON.stringify(state));}
+
+    // Stats
+    state.wins = state.wins || 0;
+    state.losses = state.losses || 0;
+    state.period = state.period || '-';
+    state.prediction = state.prediction || '-';
+    state.history = state.history || [];
+    state.comments = state.comments || [];
+
+    function render(){
+      $('wins').textContent = state.wins;
+      $('losses').textContent = state.losses;
+      const total = state.wins + state.losses || 0;
+      $('accuracy').textContent = total ? Math.round((state.wins/total)*100) + '%' : '0%';
+      $('period').textContent = state.period;
+      $('prediction').textContent = state.prediction;
+
+      const h = $('history'); h.innerHTML = '';
+      state.history.slice().reverse().forEach((item, i)=>{
+        const li = document.createElement('li'); li.textContent = item; h.appendChild(li);
+      });
+
+      const c = $('comments'); c.innerHTML = '';
+      state.comments.slice().reverse().forEach(obj=>{
+        const li = document.createElement('li'); li.style.padding='10px'; li.style.border='1px solid #eef2f7'; li.style.borderRadius='8px'; li.style.marginBottom='8px';
+        li.innerHTML = `<strong>${escapeHtml(obj.name)}</strong><div style="color:var(--muted);font-size:13px;margin-top:6px">${escapeHtml(obj.text)}</div>`;
+        c.appendChild(li);
+      });
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+    // Wire up controls
+    $('addBtn').addEventListener('click', ()=>{
+      const v = $('historyInput').value.trim(); if(!v) return; state.history = state.history || []; state.history.push(v); $('historyInput').value=''; save(); render();
+    });
+    $('clearBtn').addEventListener('click', ()=>{ if(confirm('Clear all history?')){state.history=[]; save(); render();}});
+    $('post').addEventListener('click', ()=>{
+      const name = $('name').value.trim() || 'Anonymous'; const text = $('comment').value.trim(); if(!text) return; state.comments = state.comments || []; state.comments.push({name,text}); $('comment').value=''; save(); render();
+    });
+
+    // Expose small admin keystrokes: w to add win, l to add loss, p to randomize prediction
+    document.addEventListener('keydown', e=>{
+      if(e.key==='w'){ state.wins = (state.wins||0)+1; save(); render(); }
+      if(e.key==='l'){ state.losses = (state.losses||0)+1; save(); render(); }
+      if(e.key==='p'){ const opts=['Team A','Team B','Draw','-']; state.prediction = opts[Math.floor(Math.random()*opts.length)]; save(); render(); }
+    });
+
+    render();
+  </script>
+</body>
+</html>
